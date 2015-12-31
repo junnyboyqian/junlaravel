@@ -1,0 +1,270 @@
+﻿配置文件
+app/config/database.php
+
+读写分离
+'mysql' => array(
+    'read' => array(
+        'host' => '192.168.1.1',
+    ),
+    'write' => array(
+        'host' => '196.168.1.2'
+    ),
+    'driver'    => 'mysql',
+    'database'  => 'database',
+    'username'  => 'root',
+    'password'  => '',
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+),
+192.168.1.1 将会被当作 读取 数据库连接的地址，192.168.1.2 将会被当作 写入 数据库连接的地址
+
+***************************************************************************************************
+
+数据库操作
+查询操作
+方法 select 总是回传数组值。
+$results = DB::select('select * from users where id = ?', array(1));
+
+新增操作
+DB::insert('insert into users (id, name) values (?, ?)', array(1, 'Dayle'));
+
+修改操作
+DB::update('update users set votes = 100 where name = ?', array('John'));
+
+删除操作
+DB::delete('delete from users');
+
+修改 和 删除 会回传该次操作影响到的记录数。
+
+一般性操作
+DB::statement('drop table users');
+
+监听数据库操作事件
+DB::listen(function($sql, $bindings, $time){//});
+
+数据库事务
+DB::transaction(function()
+{
+    DB::table('users')->update(array('votes' => 1));
+    DB::table('posts')->delete();
+});
+在 transaction 闭包内抛出的任何错误皆会导致交易自动回滚到上一步。
+
+初始化一项事务
+DB::beginTransaction();
+
+回滚到上一步
+DB::rollback();
+
+提交事务
+DB::commit();
+
+执行多个数据库连接
+'mysql2' => array(
+    'driver'    => 'mysql',
+    'host'      => 'localhost',
+    'database'  => 'database2',
+    'username'  => 'user2',
+    'password'  => 'pass2'
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+    'prefix'    => '',
+)
+$users = DB::connection('mysql2')->select(...);
+
+获取原生查询
+$pdo = DB::connection()->getPdo();
+
+重新连接至某个数据库
+DB::reconnect('mysql2');
+
+为了不超过 PDO 的 max_connections 最大连接数限制，您可以使用 disconnect 方法将某个数据库连接断开
+DB::disconnect('mysql2');
+
+数据库操作记录
+默认之下，Laravel 会将现有连接请求的所有操作记录都存放在内存中，然而，在某些情况下，如插入一组大量记录时，可能会导致应用程序使用内存过量。要将记录关闭，您可以使用 disableQueryLog 方法
+DB::connection()->disableQueryLog();
+得到执行过的操作记录数组，使用 getQueryLog 方法
+$queries = DB::getQueryLog();
+***************************************************************************************************
+
+查询构造器(query builder)
+
+$users = DB::table('users')->get(); //取得所有的数据列
+$user = DB::table('users')->where('name', 'John')->first(); //取得单一数据列
+$name = DB::table('users')->where('name', 'John')->pluck('name');  //取得单一数据列的单一字段
+
+$roles = DB::table('roles')->lists('title'); //取得单一字段值的列表
+$roles = DB::table('roles')->lists('title', 'name'); //为回传数组指定自定义键值
+
+指定查询子句 (Select Clause)
+
+$users = DB::table('users')->select('name', 'email')->get();
+$users = DB::table('users')->distinct()->get();
+$users = DB::table('users')->select('name as user_name')->get();
+
+增加查询子句到现有的的查询中
+$query = DB::table('users')->select('name');
+$users = $query->addSelect('age')->get();
+
+使用 where 及运算符
+$users = DB::table('users')->where('votes', '>', 100)->get();
+
+"or" 语法
+$users = DB::table('users')
+->where('votes', '>', 100)
+->orWhere('name', 'John')
+->get();
+
+使用 Where Between
+$users = DB::table('users')
+        ->whereBetween('votes', array(1, 100))->get();
+
+使用 Where Not Between
+$users = DB::table('users')
+                    ->whereNotBetween('votes', array(1, 100))->get();
+
+使用 Where In 与数组
+$users = DB::table('users')
+                    ->whereIn('id', array(1, 2, 3))->get();
+$users = DB::table('users')
+                    ->whereNotIn('id', array(1, 2, 3))->get();
+
+使用 Where Null 找有未设定的值的数据
+$users = DB::table('users')
+                    ->whereNull('updated_at')->get();
+
+排序(Order By), 分群(Group By), 及 Having
+$users = DB::table('users')
+                    ->orderBy('name', 'desc')
+                    ->groupBy('count')
+                    ->having('count', '>', 100)
+                    ->get();
+
+偏移(Offset) 及 限制(Limit)
+$users = DB::table('users')->skip(10)->take(5)->get();
+
+
+Joins
+DB::table('users')
+            ->join('contacts', 'users.id', '=', 'contacts.user_id')
+            ->join('orders', 'users.id', '=', 'orders.user_id')
+            ->select('users.id', 'contacts.phone', 'orders.price')
+            ->get();
+
+Left Join 语法
+DB::table('users')
+        ->leftJoin('posts', 'users.id', '=', 'posts.user_id')
+        ->get();
+
+高级Join语句 使用where
+DB::table('users')
+        ->join('contacts', function($join)
+        {
+            $join->on('users.id', '=', 'contacts.user_id')
+                 ->where('contacts.user_id', '>', 5);
+        })
+        ->get();
+
+进阶Wheres
+DB::table('users')
+            ->where('name', '=', 'John')
+            ->orWhere(function($query)
+            {
+                $query->where('votes', '>', 100)
+                      ->where('title', '<>', 'Admin');
+            })
+            ->get();
+等同于
+select * from users where name = 'John' or (votes > 100 and title <> 'Admin')
+
+Exists 语法
+DB::table('users')
+            ->whereExists(function($query)
+            {
+                $query->select(DB::raw(1))
+                      ->from('orders')
+                      ->whereRaw('orders.user_id = users.id');
+            })
+            ->get();
+
+使用聚合方法
+$users = DB::table('users')->count();
+$price = DB::table('orders')->max('price');
+$price = DB::table('orders')->min('price');
+$price = DB::table('orders')->avg('price');
+$total = DB::table('users')->sum('votes');
+
+//新增
+DB::table('users')->insert(
+    array('email' => 'john@example.com', 'votes' => 0)
+);
+
+新增自动递增 (Auto-Incrementing) ID 的数据至数据库表
+$id = DB::table('users')->insertGetId(
+    array('email' => 'john@example.com', 'votes' => 0),
+    array('email' => 'dayle@example.com', 'votes' => 0)
+);
+
+//更新
+DB::table('users')
+            ->where('id', 1)
+            ->update(array('votes' => 1));
+
+数据递增或递减
+DB::table('users')->increment('votes');
+DB::table('users')->increment('votes', 5);
+DB::table('users')->decrement('votes');
+DB::table('users')->decrement('votes', 5);
+
+数据递增同时更新其他字段
+DB::table('users')->increment('votes', 1, array('name' => 'John'));
+
+
+//删除
+DB::table('users')->where('votes', '<', 100)->delete();
+删除数据库表中的所有数据
+DB::table('users')->delete();
+
+清空数据库表
+DB::table('users')->truncate();
+
+Unions
+查询构造器也提供一个快速的方法去"合并 (union)"两个查询的结果：
+$first = DB::table('users')->whereNull('first_name');
+$users = DB::table('users')->whereNull('last_name')->union($first)->get();
+
+
+悲观锁定 (Pessimistic Locking)
+DB::table('users')->where('votes', '>', 100)->sharedLock()->get();
+
+锁住更新(lock for update)
+DB::table('users')->where('votes', '>', 100)->lockForUpdate()->get();
+
+缓存查询结果
+结果被缓存时，查询语句将不会被执行，而会从应用程序指定的缓存驱动器中载入缓存的结果。
+$users = DB::table('users')->remember(10)->get(); 缓存查询结果10分钟
+
+如果您正在使用的是 支持标签的缓存驱动器，您也可以为缓存增加标签：
+$users = DB::table('users')->cacheTags(array('people', 'authors'))->remember(10)->get();
+***************************************************************************************************
+使用Migration(迁移)创建数据表
+Migration看做一个数据库的版本管理工具
+你可以rollback，你可以reset等，它给予你一种代码实现和命令行结合的方式来管理你的数据库
+
+1.php artisan make:migration create_articles_table --create=articles 创建articles表
+执行后migration文件生成在database/migrations/这个目录下
+
+2.migration文件里有两个方法：up()和down()。up()方法是执行php artisan migrate的时候调用的，这个方法会创建一个articles数据表，而down()方法则是在php artisan migrate:rollback的使用执行的，这里会直接删除articles这个数据表。up()方法里面完善下字段
+
+
+3.执行一下php artisan migrate，articles这个表就创建成功了
+
+4.php artisan migrate:rollback 撤销迁移
+
+
+使用Eloquent
+php artisan make:model Article 创建model  Aritcle模型对应articles表 也可以手动创建文件
+
+

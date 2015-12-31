@@ -1,0 +1,113 @@
+﻿获取一个选项的值
+所有配置文件都放在 app/config 这个目录
+Config::get('app.timezone');   app为配置文件  timezone为具体字段
+$timezone = Config::get('app.timezone', 'UTC'); 不存在设定一个默认值
+设定选项值
+Config::set('database.default', 'sqlite');
+
+bootstrap/start.php  该文件中设定环境
+$env = $app->detectEnvironment(array(
+
+    'local' => array('your-machine-name'),
+
+));
+local是运行环境名称而your-machine-name是服务器主机名称
+Linux 和 Mac 上，可以通过命令行执行 hostsname 查到您的主机名称。
+
+获取当前的运行环境
+$environment = App::environment();
+if (App::environment('local'))
+{
+    // 当环境为 local 时
+}
+
+if (App::environment('local', 'staging'))
+{
+    // 环境为 local 或 staging...
+}
+
+**********************************************************************************
+请求与输入
+$name = Input::get('name');
+$name = Input::get('name', 'Sally'); 没有给定默认值
+if (Input::has('name')){} 是否有输入数据
+$input = Input::all(); 取得所有发出请求时传入的输入数据
+$input = Input::only('username', 'password'); 取得部分发出请求时传入的输入数据
+$input = Input::except('credit_card');取得部分发出请求时传入的输入数据 除信用卡外
+
+$input = Input::get('products.0.name'); 数组形式的输入数据可以用点'.'形式接收
+**********************************************************************************
+
+Cookies
+Laravel 建立的 cookie 会加密并且加上认证记号，意味着如果cookie被客户端擅自改动，会导致 cookie 失效
+$value = Cookie::get('name'); 取得 Cookie 值
+$cookie = Cookie::forever('name', 'value');建立永久有效的 Cookie
+Input::flash();将输入数据存成一次性 Session
+Input::flashOnly('username', 'email'); 将部分输入数据存成一次性 Session
+Input::flashExcept('password'); 将部分输入数据存成一次性 Session
+Input::old('username'); 取得旧输入数据
+
+***********************************************************************************
+
+上传文件
+$file = Input::file('photo'); 取得上传文件
+if (Input::hasFile('photo')){} 确认文件是否有上传
+if (Input::file('photo')->isValid()){} 确认上传的文件是否有效
+Input::file('photo')->move($destinationPath);移动上传文件
+Input::file('photo')->move($destinationPath, $fileName);移动上传文件并命名
+$path = Input::file('photo')->getRealPath(); 取得上传文件所在的路径
+$name = Input::file('photo')->getClientOriginalName();取得上传文件的原始名称
+$extension = Input::file('photo')->getClientOriginalExtension();取得上传文件的后缀名
+$size = Input::file('photo')->getSize();取得上传文件的大小
+$mime = Input::file('photo')->getMimeType();取得上传文件的 MIME 类型
+
+
+***********************************************************************************
+
+请求信息
+$uri = Request::path(); 取得请求 URI
+$method = Request::method();取得请求方法
+if (Request::isMethod('post')){} 是否是post方法
+if (Request::is('admin/*')){} 确认请求路径是否符合特定格式
+$url = Request::url(); 取得请求 URL
+$segment = Request::segment(1); 取得请求 URI 部分片段
+$value = Request::header('Content-Type');取得请求 header
+$value = Request::server('PATH_INFO'); 从 $_SERVER 取得值
+if (Request::secure()){} 确认是否为 HTTPS 请求
+if (Request::ajax()){} 确认是否为 AJAX 请求
+if (Request::isJson()){} 确认请求是否有 JSON Content Type
+if (Request::wantsJson()){} 确认是否要求 JSON 回应
+if (Request::format() == 'json'){} 确认要求的回应格式
+Request::format方法会基于 HTTP Accept 标头回传请求的回应格式
+
+***********************************************************************************
+
+基本响应
+
+$response = Response::make($contents, $statusCode);//如：return Response::make('内容不存在', 404);
+$response->header('Content-Type', $value);
+return $response;
+
+return Response::view('hello')->header('Content-Type', $type);使用 Response 类的方法，最终回传视图给用户
+
+//注意cookie 的生成必须有以下2步才能生效
+$cookie = Cookie::make('name', 'value'); //创建cookie
+return Response::make($content)->withCookie($cookie); //给响应添加cookie
+或者
+$view = View::make('categories.list');
+return Response::make($view)->withCookie($cookie); //给响应添加cookie
+或者
+return Redirect::route('home')->withCookie($cookie);
+
+
+重定向跳转
+
+return Redirect::to('user/login'); 回传重定向跳转  user/login 为routes.php中定义的路由参数
+return Redirect::to('user/login')->with('message', 'Login Failed'); 回传重定向跳转并且加上快闪数据（ Flash Data ）
+return Redirect::route('login');回传根据路由名称的重定向跳转
+return Redirect::route('profile', array(1)); 路由参数赋值
+return Redirect::action('HomeController@index'); 回传根据控制器动作的重定向跳转
+return Redirect::action('UserController@profile', array(1));
+return Redirect::action('UserController@profile', array('user' => 1));
+
+***********************************************************************************

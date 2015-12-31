@@ -1,0 +1,42 @@
+﻿查询
+Illuminate/Database/Connection.php
+新增 getOne(); getRow(); getAll();
+DB::getAll();
+DB::getOne();
+DB::getRow();
+
+原生sql
+$this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC); 返回数据模式为  'email' => string '1@qq.com'
+$this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC); 返回数据模式为 0 => string '1@qq.com'
+
+$alldata = User::all()->toArray() 对象数组化
+
+增、删、改
+//新增
+DB::table('users')->insert(
+    array('email' => 'john@example.com', 'votes' => 0)
+);
+新增自动递增 (Auto-Incrementing) ID 的数据至数据库表
+$id = DB::table('users')->insertGetId(
+    array('email' => 'john@example.com', 'votes' => 0),
+    array('email' => 'dayle@example.com', 'votes' => 0)
+);
+
+//更新
+DB::table('users')
+            ->where('id', 1)
+            ->update(array('votes' => 1));
+
+数据递增或递减
+DB::table('users')->increment('votes');
+DB::table('users')->increment('votes', 5);
+DB::table('users')->decrement('votes');
+DB::table('users')->decrement('votes', 5);
+
+//删除
+DB::table('users')->where('votes', '<', 100)->delete();
+删除数据库表中的所有数据
+DB::table('users')->delete();
+
+清空数据库表
+DB::table('users')->truncate();

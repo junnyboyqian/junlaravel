@@ -1,0 +1,51 @@
+请求的生命周期
+
+在一个请求进入到您的 index.php 后，bootstrap/start.php 文件将接着被载入，这份文件会创建一个新的 Laravel Application 对象，并也作为一个IoC 容器。
+在创建 Application 对象之后，框架会设置一部分路径信息并进行环境检测。然后，一个内部的 Laravel 引导脚本将会被调用。这个文件深藏在 Laravel 的代码中，并且依据您的配置文件做一些相关设定，如：时区、错误报告等等。但除了这些设定与琐碎的配置选项外，他也做一些比较重要的事情：注册所有您应用程序中设定的服务提供商。
+在所有的事件提供者都被注册后，您的 app/start 文件将会被载入
+最后，您的 app/routes.php 文件才会被载入
+一旦您的 routes.php 文件被载入后，请求对象将会被发送至应用程序中，如此他才能被指派至其中某个路由中。
+
+//一个http请求大致走势如下
+1.请求进入 public/index.php 文件中。
+2.bootstrap/start.php 文件创建应用程序和环境检测。
+3.内部 framework/start.php 文件配置设定和载入服务提供商。
+4.应用程序 app/start 文件被载入。
+5.应用程序 app/routes.php 文件被载入。
+6.请求对象传入应用程序中，回传响应对象。
+7.响应对象回传客户端。
+
+//服务提供商:
+app/config/app.php 配置文件中找到 providers 的数组
+array(
+	'Illuminate\Foundation\Providers\ArtisanServiceProvider',
+	'Illuminate\Auth\AuthServiceProvider',
+	...
+)
+存在目录：/vendor/laravel/framework/src/Illuminate中
+
+//启动文件
+您的应用程序的启动文件被储存在 app/start 目录下
+默认下，三个文件将被包含在您的应用程序中：global.php, local.php 和 artisan.php
+global.php 
+起始文件默认包含了一些基本数据，如 日志的注册和加载您的 app/filters.php 文件。然而，您可以自由添加任何您想添加的内容。不管何种运行环境，他都会自动被包含进去在每个请求里
+
+local.php 文件仅会在 local 环境下才会被执行
+
+除了 local 外您还有其他的运行环境，一样可以为这些运行环境创建起始文件。当应用程序运行在该运行环境时将会自动载入对应文件。所以例如，如果您在 bootstrap/start.php 中设定了一个 development 运行环境，您可以创建 app/start/development.php 文件，当应用程序在该运行环境中接收请求时会自动载入该文件。
+本地为production环境
+
+//启动文件需要存放什么
+启动文件作为一个简单的地方来放置任何“引导程序”。例如，您可以注册一个 View composer(视图组件)，配置您的日志喜好或是一些 PHP 设置等等。完全取决与您。当然，把您的所有的引导代码都丢在起始文件中也会造成混乱，建议将一些引导代码放置到服务提供商中。
+
+
+//应用程序事件
+注册 before, after, finish 和 shutdown 应用程序事件，来对请求前或请求后做相应的处理：
+App::before(function($request){});
+App::after(function($request, $response){});
+Route::matched(function($route, $request){}); matched事件上注册监听器 ，当传入的请求被匹配到一个路由，但该路由尚未被执行的情况下，该事件将会被触发
+监听器将会对您的应用程序在每次请求执行 before 和 after 函数
+这些事件对于全局筛选或是全局修改回应上很有帮助。
+可以将他们注册在您的其中一个“起始文件”中或者是服务提供商中。
+finish 事件在您的应用程序响应给客户端之后被调用。应用程结束之前，在这儿做点什么是不错的选择。
+shutdown 在所有 finish 事件处理器都结束之后立即被调用，这是软件结束之前做点什么的最后机会。但在大部分的情况下，用不到这些事件

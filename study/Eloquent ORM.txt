@@ -1,0 +1,10 @@
+模型通常放在 app/models 目录下，但是您可以将它们放在任何地方，只要能通过 composer.json 被自动载入。
+定义一个 Eloquent 模型
+class User extends Eloquent {
+	 protected $table = 'my_users';
+	 protected primaryKey = 'user_id'; //主键
+	 protected $timestamps = 'false' //不设定或自动更新 updated_at,created_at 2个字段
+}
+
+
+

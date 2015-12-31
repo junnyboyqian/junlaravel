@@ -1,0 +1,12 @@
+http://www.golaravel.com/    laravel 官网  选择4.2版本 php需要5.4以上
+http://laravel-china.org/docs/4.2/  中文文档
+
+1.windows先安装composer依赖环境
+确保openssl扩展已经在php.ini中打开
+wamp 环境下 apache目录下php.ini 以及 php目录下的php.ini 都需要开启openssl扩展
+
+
+2.安装laravel
+通过 Composer Create-Project
+composer create-project laravel/laravel=4.2 your-project-nam --prefer-dist
+这种方式一次性把laravel项目的所有依赖全部安装好

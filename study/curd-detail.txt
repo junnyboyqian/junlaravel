@@ -1,0 +1,34 @@
+﻿public function getOne($query) {
+	$res = $this->pdo->query($query)->fetchAll(\PDO::FETCH_NUM);
+	if ($res !== false)
+    {
+        $res = array_values(current($res));
+        return $res[0];
+    }
+    else
+    {
+        return false;
+    }
+}
+public function getRow($query) {
+	$res = $this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+    if ($res !== false)
+    {
+        return current($res);
+    }
+    else
+    {
+        return false;
+    }
+}
+public function getAll($query) {
+	$res = $this->pdo->query($query)->fetchAll(\PDO::FETCH_ASSOC);
+    if ($res !== false)
+    {
+        return $res;
+    }
+    else
+    {
+        return false;
+    }
+}

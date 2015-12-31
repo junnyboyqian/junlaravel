@@ -1,0 +1,69 @@
+﻿控制器一般存放在 app/controllers 目录下，这个目录已默认注册在 composer.json 的 classmap 中。然而，控制器可以放在任何目录或是子目录中。路由定义与控制器类存放在哪个位置并无关系。所以，只要 Composer 知道如何自动载入控制器类，您就可以把控制器放在任何您想要的地方。
+
+laravel使用 Composer 自动载入 PHP 类
+如果不是使用命令创建的类需要更新autoload
+在项目根目录下使用命令更新类 路由才会生效
+重新记录在 composer.json 这个文件
+php artisan dump-autoload
+
+//基本控制器范例
+class UserController extends BaseController {
+    /**
+     * Show the profile for the given user.
+     */
+    public function showProfile($id)
+    {
+        $user = User::find($id);
+        return View::make('user.profile', array('user' => $user));
+    }
+}
+Route::get('user/{id}', 'UserController@showProfile'); //对应上面控制器的路由
+Route::get('foo', array('uses' => 'FooController@method','as' => 'name')); //为控制器路由指定名称
+//获取路由器的url
+$url = URL::action('FooController@method');
+$url = action('FooController@method');
+//正在执行的控制器行为名称
+$action = Route::currentRouteAction();
+
+//指定过滤器
+class UserController extends BaseController {
+    /**
+     * Instantiate a new UserController instance.
+     */
+    public function __construct()
+    {
+        $this->beforeFilter('auth', array('except' => 'getLogin'));
+        $this->beforeFilter('csrf', array('on' => 'post'));
+        $this->afterFilter('log', array('only' => array('fooAction', 'barAction')));
+    }
+}
+//使用闭合函数定义过滤器
+$this->beforeFilter(function() {//});
+//控制器里的方法当做过滤器 使用@语法定义过滤器
+$this->beforeFilter('@filterRequests');
+public function filterRequests($route, $request){//};
+******************************************************************************************
+php artisan controller:make PhotoController 创建一个名为PhotoController 的资源控制器
+
+Route::resource('photo', 'PhotoController');  注册一个资源化路由至控制器上 
+
+访问/photo 即可以到 PhotoController index方法
+
+/photo  GET 方式   到 index 控制器 (数据列表)
+/photo  POST 方式  到 store 控制器 (保存数据)
+/photo/create  GET 方式  到 create 控制器 (添加数据)
+/photo/{id}  GET 方式  到 show 控制器 (查看某条数据)
+/photo/{id}edit  GET 方式  到 edit 控制器 (修改某条数据)
+/photo/{id}  PUT/PATCH 方式  到 update 控制器 (保存修改某条数据)
+/photo/{id}  DELETE 方式  到 destroy 控制器 (删除数据)
+
+在From表单中多传递一个_method隐藏域为 DELETE 就可以实现 删除数据
+******************************************************************************************
+
+
+******************************************************************************************
+隐式控制器
+Route::controller('photos', 'PhotoController'); 定义控制器路由
+PhotoController 控制器 里面方法 anyProfile() 可以通过链接 /photos/profile 访问
+其它方法可以通过这种方式访问  不用为每一个方法定义路由
+******************************************************************************************

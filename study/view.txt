@@ -1,0 +1,64 @@
+﻿Views
+视图完全支持php原生写法
+<?php echo $name;?>
+return View::make('greeting', array('name' => 'Taylor')); 传递到视图
+// 使用通用方式
+$view = View::make('greeting')->with('name', 'Steve');
+// 使用魔术方法
+$view = View::make('greeting')->withName('steve');
+// 设定所有视图共用数据
+View::share('name', 'Steve');
+
+//传递子视图到视图
+子视图存在 app/views/child/view.php
+$view = View::make('greeting')->nest('child', 'child.view'); child 为子视图变量
+$view = View::make('greeting')->nest('child', 'child.view', array('name' => $value));
+在greeting视图用<?php echo $child;?> 渲染子视图
+if (View::exists('emails.customer')){} 确认视图是否存在
+
+//视图组件
+//定义下面组件 之后每当 profile,dashboard 视图被渲染时， count 变量就会被绑定到视图。
+View::composer('profile,'dashboard'), function($view)
+{
+    $view->with('count', User::count());
+});
+//类作为组件
+View::composer('profile', 'ProfileComposer');
+//一个视图组件类应该像这样定义：
+class ProfileComposer {
+    public function compose($view)
+    {
+        $view->with('count', User::count());
+    }
+}
+//定义群组视图组件
+View::composers(array(
+    'AdminComposer' => array('admin.index', 'admin.profile'),
+    'UserComposer' => 'user',
+    'ProductComposer@create' => 'product'
+));
+//视图创建者
+//视图 创建者几乎和组件运作方式一样 只是会在视图初始化时就立刻建立起来 要注册一个创建者 只要使用 creator 方法
+View::creator('profile', function($view)
+{
+    $view->with('count', User::count());
+});
+
+//特殊响应
+//建立 JSON 响应 返回json数据
+return Response::json(array('name' => 'Steve', 'state' => 'CA'));
+//JSONP响应
+return Response::json(array('name' => 'Steve', 'state' => 'CA'))->setCallback(Input::get('callback'));
+//下载文件响应 下载文件名必须为 ASCII
+return Response::download($pathToFile);
+return Response::download($pathToFile, $name, $headers);
+
+//响应宏
+//自定义可以在很多路由和控制器重复使用的响应，可以使用 Response::macro 方法
+//macro 方法第一个参数为宏名称，第二个参数为闭合函数。闭合函数会在 Response 调用宏名称的时候被执行
+//可以把定义自己的宏放在 app/start 里面的文件 或者将宏组织成独立的文件，并且从其中一个 start 文件里引入
+Response::macro('caps', function($value)
+{
+    return Response::make(strtoupper($value));
+});
+return Response::caps('foo');
