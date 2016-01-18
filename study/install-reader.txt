@@ -10,3 +10,6 @@ wamp 环境下 apache目录下php.ini 以及 php目录下的php.ini 都需要开启openssl扩展
 通过 Composer Create-Project
 composer create-project laravel/laravel=4.2 your-project-nam --prefer-dist
 这种方式一次性把laravel项目的所有依赖全部安装好
+
+windows下composer安装常见问题
+http://my.oschina.net/chinahub/blog/540109?fromerr=rLDfxuNa
