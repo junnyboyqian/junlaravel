@@ -13,3 +13,10 @@ composer create-project laravel/laravel=4.2 your-project-nam --prefer-dist
 
 windows下composer安装常见问题
 http://my.oschina.net/chinahub/blog/540109?fromerr=rLDfxuNa
+
+优雅链接
+apache 确保 mod_rewrite 模块开启(httpd.conf 配置)
+nginx 
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
