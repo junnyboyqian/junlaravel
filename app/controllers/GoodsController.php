@@ -50,7 +50,7 @@ class GoodsController extends BaseController {
 		$alldata = DB::getRow("SELECT * FROM wp_users where name='张三'");
 		//$alldata = DB::selectOne("SELECT email FROM wp_users where name='张三'"); //DB:模式 ->toArray()无效
 		//$alldata = User::all()->toArray();
-		//$alldata = DB::table('users')->where('name', '张三')->get();bbb
+		//$alldata = DB::table('users')->where('name', '张三')->get();
 		var_dump($alldata);
 		return View::make('goodslist');
 	}
