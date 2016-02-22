@@ -14,7 +14,8 @@ class PhotoController extends \BaseController {
 
 	public function anyProfile() {
 		//echo $user;
-		echo "profile";
+		$name = Input::get('a');
+		echo "profile",$name;
 	}
 	/**
 	 * Show the form for creating a new resource.

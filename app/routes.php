@@ -19,13 +19,16 @@ Route::get('junny', function()
 {
     return 'junny!';
 });
+
 /*Route::get('user/{id}', 'UserController@showProfile'); 传参*/
 Route::post('foo/bar', function()
 {
     return 'Hello World';
 });
 Route::resource('photo', 'PhotoController'); //默认访问 PhontController 中的 index 方法
+Route::resource('vote', 'VoteController'); //默认访问 PhontController 中的 index 方法
 Route::controller('photos', 'PhotoController');// 使用 photos/profile 访问 photoController 中的 anyProfile方法
+Route::controller('match', 'MatchController');
 Route::get('goods/list', 'GoodsController@goodsList');
 
 Route::get('user/profile', array(

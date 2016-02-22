@@ -31,28 +31,41 @@ class GoodsController extends BaseController {
 	public function goodsList()
 	{
 		//return Response::view('hello')->header('Content-Type',''); 输出hello视图页面
+		//$url = Request::url(); //返回 url: http://xx.com/aa/bb
+		//$uri = Request::getUri(); //返回 getUri: http://xx.com/aa/bb/?c=d
+		//$ip = Request::getClientIp(); // 客户端ip
+		//$qs = Request::getQueryString(); // c=d
+		//$port = Request::getPort();
+		//Request::segment(1); //Get a segment from the URI (1 based index)
 		//$uri = Request::path(); 返回 goods/list
 		//return Response::make('内容不存在', 404);
 		//$cookie = Cookie::make('name', 'junnyboy');
 		//echo  Cookie::get('name'),'<br/>';
+		//Cookie::forget('name');
 		//return Response::make('create cookie')->withCookie($cookie);
-		//return Redirect::to('users')->with('message', 'Login Failed'); 跳转+快闪数据
+		//return Redirect::to('users')->with('message', 'Login Failed'); //跳转+快闪数据
 		//return Redirect::to('junny');
 		//return Redirect::action('PhotoController@anyProfile',array('user' => 1,'name' => 2)); //跳转到对应action 并传递参数
 		//return Redirect::route('profile',array(1)); //回传根据路由名称的重定向跳转
 		//$url = URL::action('GoodsController@goodsList');
 		//$action = Route::currentRouteAction();
-		//View::share('name', 'junnyboy');
+		//View::share('name', 'junnyboy'); 通常你应该在服务提供者的 boot 方法内使用 share 方法。
 		//return View::make('goodslist')->nest('child', 'hello');
 		//$users = User::all();
 		//return View::make('goodslist')->nest('child', 'users',array('users' => $users)); //带参数渲染子页面到视图
 		//$environment = App::environment(); 当前的环境
-		$alldata = DB::getRow("SELECT * FROM wp_users where name='张三'");
+		//$view = view('greetings', $data); 传递数组到视图 注意必须为数组 [5.0以上版本]
+		//$alldata = DB::getRow("SELECT * FROM wp_users where name='张三'");
+		$alldata = DB::table('users')->paginate(1);
 		//$alldata = DB::selectOne("SELECT email FROM wp_users where name='张三'"); //DB:模式 ->toArray()无效
 		//$alldata = User::all()->toArray();
 		//$alldata = DB::table('users')->where('name', '张三')->get();
-		var_dump($alldata);
-		return View::make('goodslist');
+		//var_dump($alldata);
+		return View::make('goodslist', compact('alldata'));
+		//$aaa = 123;
+		//return View::make('goodslist', compact('aaa','alldata'));//拼接新数组
+		//return View::make('goodslist')->with('aaa', 123)->with('users', $alldata);
+		//View::make('goodslist')->with('users', $users);
 	}
 
 }

@@ -1,0 +1,563 @@
+/* reset */
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+table{border-collapse:collapse;border-spacing:0;}
+caption,th{text-align:left;font-weight:normal;}
+html,body,fieldset,img,iframe,abbr{border:0;}
+i,cite,em,var,address,dfn{font-style:normal;}
+[hidefocus],summary{outline:0;}
+li{list-style:none;}
+h1,h2,h3,h4,h5,h6,small{font-size:100%;}
+sup,sub{font-size:83%;}
+pre,code,kbd,samp{font-family:inherit;}
+q:before,q:after{content:none;}
+textarea{overflow:auto;resize:none;}
+label,summary{cursor:default;}
+a,button{cursor:pointer;}
+h1,h2,h3,h4,h5,h6,em,strong,b{font-weight:bold;}
+del,ins,u,s,a,a:hover{text-decoration:none;}
+body,textarea,input,button,select,keygen,legend{font:12px/1.5 arial,\5b8b\4f53;color:#333;outline:0; font-family:"微软雅黑"}
+body{background:#fff;}
+a,a:hover{} 
+ul {list-style: outside none disc;}
+.clearfix:after {
+    clear: both;
+    content: " ";
+    display: block;
+    font-size: 0;
+    height: 0;
+    overflow: hidden;
+}
+.clearfix{zoom: 1}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+body{
+    background-color: #080d34; 
+}
+.wrap {
+    position: relative;
+    /* background: url('../images/index/bg.jpg') no-repeat scroll center; */
+}
+.header{  
+    position: relative;
+    padding-top:30px;
+    z-index: 10;
+}
+.navul {
+    position: relative;
+}
+.navbox ul {
+    /* height: 103px; */
+    padding-left: 197px;
+}
+.navbox ul li {
+    float: left;
+}
+.navbox ul li a span{
+    color: #585BAA;
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px 35px 33px;
+}
+.navbox ul li.active a span{color: white;}
+.navbox li a span{ display: block;color: #999;}
+.navbox li:hover a span{ border-bottom: 3px solid #6749FF;}
+.navbox li.active a span{ border-bottom: 3px solid #6749FF;}
+.logo {
+    position: absolute;
+    top:6px;
+    width: 100px;
+}
+.uname {
+    position: absolute;
+    display: inline-block;
+    top:8px;
+    width: 110px;
+    height: 33px;
+    background: url("../images/index/user-icon.png") no-repeat scroll left center;
+    /* text-align: center; */
+    line-height: 33px;
+    padding-left:20px;
+    color: white;
+    cursor: default;
+}
+.logout {
+    display: inline-block;
+    margin-left: 15px;
+    cursor: pointer;
+    color: #585baa;
+}
+.ucenter {
+    position: absolute;
+    display: inline-block;
+    top:8px;
+    right: 10px;
+    width: 78px;
+    height: 33px;
+    background: url('../images/index/ucenter-n.png') no-repeat;
+}
+.ucenter:hover{
+    background: url('../images/index/ucenter-s.png') no-repeat;
+}
+
+.login {
+    position: absolute;
+    display: inline-block;
+    top:8px;
+    right: 100px;
+    width: 78px;
+    height: 33px;
+    background: url('../images/index/login-n.png') no-repeat;
+}
+.login:hover{
+    background: url('../images/index/login-s.png') no-repeat;
+}
+.register {
+    position: absolute;
+    display: inline-block;
+    width: 78px;
+    height: 33px;
+    top:8px;
+    right: 0px;
+    width: 100px;
+    background: url('../images/index/register-n.png') no-repeat;
+}
+.maintop {
+    background: url('../images/index/bg.jpg') no-repeat scroll center;
+}
+.mwrap {
+    width:1200px;
+    height: 940px;
+    margin: 0 auto;
+    position: relative;
+}
+.mainbottom {
+    margin: -258px auto;
+    width:1200px;
+    height: 2400px;
+    position: relative;
+}
+.biglogo {
+    position: absolute;
+    display: inline-block;
+    width: 339px;
+    height: 222px;
+    left:450px;
+    top:74px;
+    cursor: default;
+    background: url('../images/index/logo_big.png') no-repeat;
+}
+.theme1 {
+    position: absolute;
+    display: inline-block;
+    width: 780px;
+    height: 151px;
+    left:215px;
+    top:290px;
+    cursor: default;
+    background: url('../images/index/theme.png') no-repeat;
+}
+.theme2 {
+    position: absolute;
+    display: inline-block;
+    width: 617px;
+    height: 88px;
+    left:280px;
+    top:500px;
+    cursor: default;
+    background: url('../images/index/theme2.png') no-repeat;
+}
+.register:hover{
+    background: url('../images/index/register-s.png') no-repeat;
+}
+.banner {
+    position: relative;
+    width: 1200px;
+    height: 359px;
+    background: url("../images/index/bannerbg.png");
+}
+.banner ul {
+    position: relative;
+    padding:10px 3px 10px 10px;
+    width: 237px;
+    height: 345px;
+}
+.banner ul li {
+    width: 226px;
+    height: 109px;
+    background-color: black;
+    margin-bottom: 7px;
+}
+.checkarrow {
+    position: absolute;
+    width: 234px;
+    height: 109px;
+    background: url('../images/index/banner-s.png');
+}
+.video {
+    margin-top: 10px;
+}
+.apply{
+    margin: 10px 12px 0 0;
+    cursor: pointer;
+    width: 312px;
+    height: 157px;
+    background:url('../images/index/apply.png');
+}
+.apply:hover{
+    background:url('../images/index/apply-o.png');
+}
+.sys {
+    margin: 2px 0px 0 0;
+    width: 316px;
+    height: 183px;
+    background:url('../images/index/wx.png');
+}
+.sys img {
+    margin:18px 0 0 12px;
+}
+.plan {
+    position: relative;
+    margin-top: 15px;
+    width: 1200px;
+    height:299px;
+    background: url("../images/index/matchbg.png");
+}
+.scap {
+    position: absolute;
+    display: inline-block;
+    width: 91px;
+    height: 91px;
+    left:0px;
+    top:0px;
+    background: url('../images/index/mplan.png') no-repeat;
+}
+
+.plan .mtitle{
+   /*  width: 813px;
+   height:  */
+    padding:20px 0 0 210px;
+}
+.plan .mtitle li {
+    float: left;
+    width:82px;
+    height: 34px;
+    margin-right: 102px;
+    color:white;
+}
+.mtchecked{
+    color:#FE9B3D !important;
+}
+.bigw {
+    font-family: "黑体";
+    font-size: 18px;
+    line-height: 18px;
+}
+.smallw {
+    font-family: "黑体";
+    font-size: 10px;
+    color: #baa1ed;
+}
+.line {
+    margin: 65px 0 0 238px;
+    background-color: black;
+    height: 2px;
+    width: 736px;
+}
+.timeline-ul {
+    height: 32px;
+    left: 230px;
+    position: absolute;
+    top: 75px;
+}
+.timeline-ul li {
+    float: left;
+    width: 24px;
+    height: 24px;
+    margin-right: 162px;
+    background: url('../images/index/round-n.png');
+}
+.timeline-arrow {
+    display: none;
+    margin:26px 0 0 2px;
+    width: 20px;
+    height: 15px;
+    background: url('../images/index/round-check1.png');
+}
+.timeline-ul .cur{
+    background: url('../images/index/round-check.png');
+}
+
+.matchcon-ul {
+    display: none;
+    width: 1100px;
+    height: 120px;
+    left: 60px;
+    position: absolute;
+    top: 155px;
+}
+.matchcon-ul li{
+    float: left;
+    width: 194px;
+    height: 120px;
+    margin-right: 30px;
+}
+.matchcon-ul li .area{
+    text-align: center;
+    color: white;
+    font-family: "黑体";
+    line-height: 24px;
+    font-size: 18px;
+    width:154px;
+    height: 94px; 
+}
+.n1 {
+    background: url('../images/index/match1.png');
+}
+.n2 {
+    background: url('../images/index/match2.png');
+}
+.n3 {
+    background: url('../images/index/match3.png');
+}
+.n4 {
+    background: url('../images/index/match4.png');
+}
+.n5 {
+    background: url('../images/index/match5.png');
+}
+.matcharrow {
+    padding-top: 35px;
+}
+.marea {
+    height: 120px;
+}
+.mtime {
+    width:154px;
+    height: 25px;
+    margin: 8px 0 0 12px;
+    font-family: "黑体";
+    color: #8669c5;
+    font-size: 12px;
+}
+
+.team {
+    position: relative;
+    margin-top:20px; 
+    height: 615px;
+}
+.teaml {
+    width: 855px;
+    height: 615px;
+    background: url("../images/index/leftbg.png");
+}
+.tcity {
+    padding:7px;
+}
+.teaml .tcity li {
+    text-align: center;
+    font: 18px/34px "黑体";
+    color: white; 
+    width: 106px;
+    height: 34px;
+    margin-right: 2px;
+    float: left;
+    background: url('../images/index/dz-n.png');
+}
+.teaml .tcity .cur {
+    background: url('../images/index/dz-s.png');
+}
+.sszb {
+    position: relative;
+    width: 334px;
+    height: 290px;
+}
+.ssxw {
+    position: relative;
+    width: 334px;
+    height: 330px;
+}
+.tag {
+    cursor: default;
+    font: 18px "黑体";
+    color: white;
+    display: inline-block;
+    position: absolute;
+    width: 334px;
+    height: 39px;
+    line-height: 39px;
+    background: url('../images/index/tag-bg.png');
+}
+
+.tag p{
+    padding-left:22px; 
+}
+
+.zblist {
+    padding-top: 10px;
+}
+.zblist p {
+    font:15px "黑体";
+    color: #d3d3d3;
+    line-height: 30px;
+}
+.zblist span {
+    display: inline-block;
+    margin-left: 10px;
+    font:15px "黑体";
+    color: #57556b;
+}
+.xwimg {
+    position: relative;
+    padding-top: 60px;
+    width: 334px;
+    height: 107px;
+}
+.xwimg a {
+    position: absolute;
+    display: inline-block;
+    width: 148px;
+    font:20px/30px "黑体";
+    color: #a171fe;
+    top:70px;
+    left:10px;
+}
+.xwimg img {
+    margin: 0 0 0 168px;
+}
+.pad60 {
+    padding-top: 60px;
+}
+/* 主播 begin */
+.zhubo {
+    margin-top: 20px;
+    height: 436px;
+}
+.zbad {
+    width: 1200px;
+    height: 108px;
+    background: url('../images/index/zq1.jpg');
+}
+.zbmain {
+    margin-top:20px;
+}
+.zbleft {
+    width: 430px;
+    height: 303px;
+    background-color: #351B7E;
+}
+.zbright {
+    width: 750px;
+    height: 303px;
+}
+.zbss {
+    position: relative;
+    cursor: default;
+    font: 18px "黑体";
+    color: white;
+    line-height: 39px;
+    width: 748px;
+    height: 39px;
+    background: url('../images/index/tag-bg.png');
+}
+.zbleft img {
+    margin: 5px;
+}
+.zbicon {
+    display: inline-block;
+    position: absolute;
+    width: 28px;
+    height: 31px;
+    left:20px;
+    top:5px;
+    background: url('../images/index/icon-zb.png');
+}
+.zbss p {
+    padding-left:57px;
+}
+.zbright ul {
+    padding: 27px 0 0 27px;
+    width: 724px;
+    height: 233px;
+}
+.zbright ul li {
+    width: 98px;
+    height: 98px;
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 30px;
+}
+/* 主播 end */
+
+/* 赛事回顾 begin */
+.review {
+    margin-top: 25px;
+    position: relative;
+}
+.sshg {
+    position: relative;
+    cursor: default;
+    font: 18px "黑体";
+    color: white;
+    line-height: 39px;
+    width: 1200px;
+    height: 39px;
+    background: url('../images/index/tag-bg.png');
+}
+.ssicon {
+    display: inline-block;
+    position: absolute;
+    width: 28px;
+    height: 31px;
+    left:20px;
+    top:5px;
+    background: url('../images/index/icon-review.png'); 
+}
+.sshg p {
+    padding-left:57px;
+}
+.review ul {
+    padding-top:34px; 
+    height: 209px;
+}
+.review ul li {
+    font:15px "黑体"; 
+    float: left;
+    width: 286px;
+    height: 209px;
+    margin-right: 18px;
+}
+/* 赛事回顾 end */
+
+/* footer begin */
+.footer{
+    position: relative;
+    height: 200px;
+}
+.fmain {
+    margin: auto;
+    width: 718px;
+}
+.footer .zzjg {
+    margin:0 0 57px 200px;
+    width: 310px;
+    height: 45px;
+    background: url('../images/index/host.png');
+}
+.footer ul li{
+    width: 133px;
+    height: 36px;
+    float: left;
+    margin-right: 10px;
+}
+/* footer end */
+.navul,.foot, .downloadbox {
+    margin: 0 auto;
+    width: 1158px;
+}
+

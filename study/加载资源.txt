@@ -1,0 +1,3 @@
+资源放在public目录下
+<script language="JavaScript" src="{{ URL::asset('/') }}js/aa.js"></script>
+<link href="{{ asset('/css/common.css') }}" rel="stylesheet" type="text/css">
