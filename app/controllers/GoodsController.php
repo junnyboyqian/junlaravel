@@ -30,6 +30,21 @@ class GoodsController extends BaseController {
 	}*/
 	public function goodsList()
 	{
+		//Session::put('stest', 'yes');
+		//Session::put('stest1', 'no');
+		//echo Session::get('stest');
+		//Cache::forget('uname');
+		//Cache::add('uname', 'junnyboy', 1);
+		//$value = Cache::get('uname', '13');
+		//$value = Cache::rememberForever('uname', function(){ return array('a' => 132,'b'=> 456); });
+		//var_dump($value); exit;
+		/*if (Cache::has('uname'))
+		{
+		    $value = Cache::get('uname');
+		    echo $value;
+		} else {
+			echo 'false';
+		}*/
 		//return Response::view('hello')->header('Content-Type',''); 输出hello视图页面
 		//$url = Request::url(); //返回 url: http://xx.com/aa/bb
 		//$uri = Request::getUri(); //返回 getUri: http://xx.com/aa/bb/?c=d
@@ -55,13 +70,23 @@ class GoodsController extends BaseController {
 		//return View::make('goodslist')->nest('child', 'users',array('users' => $users)); //带参数渲染子页面到视图
 		//$environment = App::environment(); 当前的环境
 		//$view = view('greetings', $data); 传递数组到视图 注意必须为数组 [5.0以上版本]
-		//$alldata = DB::getRow("SELECT * FROM wp_users where name='张三'");
-		$alldata = DB::table('users')->paginate(1);
+		/* 数组的方式分页 */
+		/*$page = Input::get('page') ? Input::get('page') : 1;
+		$page -= 1;
+		$totalCount = User::count();
+		$alldata = DB::getAll("SELECT * FROM wp_users limit {$page},1");
+		$paginator = Paginator::make($alldata, $totalCount , 1);
+		视图输出 $paginator->links();*/
+		/* 数组的方式分页 end */
+		$alldata = User::paginate(2);
+		//$alldata = DB::table('users')->paginate(1);
 		//$alldata = DB::selectOne("SELECT email FROM wp_users where name='张三'"); //DB:模式 ->toArray()无效
 		//$alldata = User::all()->toArray();
 		//$alldata = DB::table('users')->where('name', '张三')->get();
 		//var_dump($alldata);
-		return View::make('goodslist', compact('alldata'));
+		$title = '<span style="color:red">文章</span>';
+		return View::make('goodslist', compact('alldata','title'));
+		//return View::make('goodslist', compact('alldata','title','paginator'));
 		//$aaa = 123;
 		//return View::make('goodslist', compact('aaa','alldata'));//拼接新数组
 		//return View::make('goodslist')->with('aaa', 123)->with('users', $alldata);

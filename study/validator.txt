@@ -1,0 +1,45 @@
+$validator = Validator::make(
+    array('name' => 'Dayle'),
+    array('name' => 'required|min:5')
+);
+或者
+$validator = Validator::make(
+    array('name' => 'Dayle'),
+    array('name' => array('required', 'min:5'))
+);
+
+验证多个字段
+$validator = Validator::make(
+    array(
+        'name' => 'Dayle',
+        'password' => 'lamepassword',
+        'email' => 'email@example.com'
+    ),
+    array(
+        'name' => 'required',
+        'password' => 'required|min:8',
+        'email' => 'required|email|unique:users'
+    )
+);
+
+当一个 Validator 实例被建立，fails（或 passes） 这两个方法就可以在验证时使用
+if ($validator->fails())
+{
+    // The given data did not pass validation
+}
+验证失败，获取信息
+$messages = $validator->messages()
+取得无法通过验证的规则
+$failed = $validator->failed();
+
+Route::post('register', function()
+{
+    $rules = array(...);
+
+    $validator = Validator::make(Input::all(), $rules);
+
+    if ($validator->fails())
+    {
+        return Redirect::to('register')->withErrors($validator);
+    }
+});

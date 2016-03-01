@@ -1,0 +1,52 @@
+缓存文件存放路径：\app\storage\cache\
+所有项目都是序列化的存储在缓存中,可以自由存储任何类型的数据
+
+
+将某条数据插入缓存
+Cache::put('key', 'value', $minutes);
+Cache::add('key', 'value', $minutes);
+$value = Cache::get('key');
+$value = Cache::get('key', 'default'); 返回默认值
+缓存中永久存储数据
+Cache::forever('key', 'value');
+缓存中删除数据
+Cache::forget('key');
+
+从缓存中取得数据, 数据不存在时存储一个默认值
+Cache::remember 
+$value = Cache::remember('users', $minutes, function()
+{
+    return DB::table('users')->get();
+});
+
+Cache::rememberForever('key', function(){ return 'value'; });
+
+从缓存中取出一条数据, 然后删除它
+$value = Cache::pull('key');
+
+
+除了file和database , 其他驱动都支持 increment and decrement 操作
+
+递增
+
+Cache::increment('key');
+
+Cache::increment('key', $amount);
+
+递减
+
+Cache::decrement('key');
+
+Cache::decrement('key', $amount);
+
+
+数据库缓存
+
+当使用'数据库'缓存驱动时, 需要设置一个表来存储缓存数据
+
+Schema::create('cache', function($table)
+{
+    $table->string('key')->unique();
+    $table->text('value');
+    $table->integer('expiration');
+});

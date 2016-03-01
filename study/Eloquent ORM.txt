@@ -1,4 +1,7 @@
 模型通常放在 app/models 目录下，但是您可以将它们放在任何地方，只要能通过 composer.json 被自动载入。
+
+若没有特别指定，系统会默认自动对应名称为「类名称的小写复数形态」的数据库表。所以，在上面的例子中， Eloquent 会假设 User 将把数据存在 users 数据库表 , 可以在类里定义 table 属性自定义要对应的数据库表
+
 定义一个 Eloquent 模型
 class User extends Eloquent {
 	 protected $table = 'my_users';
@@ -6,5 +9,31 @@ class User extends Eloquent {
 	 protected $timestamps = 'false' //不设定或自动更新 updated_at,created_at 2个字段
 }
 
+提示： 所有查询构造器里的方法，查询 Eloquent 模型时也可以使用。
+$users = User::all();
+$user = User::find(1); //根据主键取出一条数据
+$model = User::findOrFail(1); //根据主键取出一条数据或抛出异常
+$model = User::where('votes', '>', 100)->firstOrFail();
+$users = User::where('votes', '>', 100)->take(10)->get();
 
+
+Eloquent 聚合查询
+$count = User::where('votes', '>', 100)->count();
+$users = User::whereRaw('age > ? and votes = 100', array(25))->get(); //使用whereRaw
+
+
+拆分查询
+
+如果您要处理非常多（数千条）Eloquent 查询结果，使用 chunk 方法可以让您顺利工作而不会吃掉内存：
+User::chunk(200, function($users)
+{
+    foreach ($users as $user)
+    {
+        //
+    }
+});
+
+查询时连接数据库
+指定在执行 Eloquent 查询时要使用哪个数据库连线。只要使用 on 方法
+$user = User::on('connection-name')->find(1);
 

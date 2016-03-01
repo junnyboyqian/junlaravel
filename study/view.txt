@@ -64,9 +64,6 @@ Response::macro('caps', function($value)
 return Response::caps('foo');
 
 //blade 视图输出
-$title = '<span style="color:red">文章</span>';
-{{$title}}  原样输出内容 
-{!! $title !!} 这样输出会渲染输出
 @unless 等同于 if !
 
 继承某个视图
@@ -82,3 +79,13 @@ $title = '<span style="color:red">文章</span>';
 @append 这个关键字，它表明“此处的内容添加到”，因此内容会不断扩展。而最后用了 @stop，表示这个 section 的处理到此为止。如果在后面继续用 @append 或者 @stop 来指定这个 section 的内容，都不会生效。除非用 @override 来处理。 @override 的意思就是“覆盖之前的所有定义，以这次的为准”
 
 @parent 保留默认的内容
+
+视图注释代码
+{{-- Blade Comment --}}
+
+$title = '<span style="color:red">文章</span>';
+{{ $title }} 输出红色字体"文章"
+{{{ $title }}}  输出 <span style="color:red">文章</span>
+@{{ $title }} 输出原始内容 {{ $title }}
+
+{{{ $name or 'Default' }}}
